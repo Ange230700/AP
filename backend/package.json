@@ -6,7 +6,7 @@
     "build": "node migrate.js",
     "start": "node index.js",
     "test": "jest",
-    "prettier": "prettier --write .",
+    "prettier": "npx prettier --write .",
     "lint": "npx eslint --fix ."
   },
   "dependencies": {
