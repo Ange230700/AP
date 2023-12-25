@@ -1,0 +1,12 @@
+body {
+  color: var(--secondary-color);
+  font-family: var(--main-font);
+  font-size: calc(var(--font-size-constant) * 1.6);
+  font-weight: var(--font-weight-regular);
+  line-height: 1.5;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  flex: 1;
+  display: flex;
+}

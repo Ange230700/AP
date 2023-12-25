@@ -1,0 +1,45 @@
+:root {
+  // § colors
+  --primary-color: hsla(24, 87%, 55%, 1);
+  --secondary-color: hsla(0, 0%, 16%, 1);
+  --tertiary-color: hsla(21, 14%, 44%, 1);
+  --quaternary-color: hsla(34, 20%, 73%, 1);
+  --neutral-color-1: hsla(0, 0%, 100%, 1);
+  --neutral-color-2: hsla(0, 0%, 0%, 1);
+
+  // § fonts
+  --main-font: "Inter", sans-serif;
+
+  // § enlargement factors
+  --enlargement-factor: 1.5;
+  --enlargement-factor-2: 2;
+
+  // § font sizes
+  --minimum-font-size: 10px;
+  --font-size-constant: 3.125vw;
+
+  // § font weights
+  --font-weight-thin: 100;
+  --font-weight-regular: 400;
+  --font-weight-bold: 700;
+
+  // § spacing
+  --minimum-spacing-constant: 8px;
+  --spacing-constant: 2.5vw;
+
+  // § other variables
+  --minimum-border-radius-constant: 10px;
+  --border-radius-constant: 3.125vw;
+  --minimum-header-height: 14px;
+  --header-height: 4.375vw;
+  --minimum-footer-height: 14px;
+  --footer-height: 4.375vw;
+  --icon-container-minimum-size: 20px;
+  --icon-container-size: 4.375vw;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
