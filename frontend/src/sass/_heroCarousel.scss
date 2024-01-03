@@ -1,0 +1,26 @@
+.DynamicCarouselContainer {
+  .DynamicCarouselSlider {
+    .DynamicCarouselItem {
+      width: clamp(
+        calc(100vw - calc(var(--minimum-spacing-constant) * 2)),
+        calc(100vw - calc(var(--spacing-constant) * 2)),
+        calc(
+          (100vw - calc(var(--spacing-constant) * 2)) *
+            var(--enlargement-factor)
+        )
+      );
+      display: flex;
+
+      .DynamicCarouselImage {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: clamp(
+          var(--minimum-border-radius-constant),
+          var(--border-radius-constant),
+          calc(var(--border-radius-constant) * var(--enlargement-factor-2))
+        );
+      }
+    }
+  }
+}

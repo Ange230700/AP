@@ -1,4 +1,56 @@
+import { useState } from "react";
+import { NavLink } from "react-router-dom";
+// import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
+import { useProducts } from "../contexts/ProductContext";
+import HeroCarousel from "../components/HeroCarousel";
+
+// const responsiveCategories = {
+//   desktop: {
+//     breakpoint: { max: 3000, min: 1601 },
+//   },
+//   laptop: {
+//     breakpoint: { max: 1600, min: 1025 },
+//   },
+//   landscapeTablet: {
+//     breakpoint: { max: 1024, min: 835 },
+//   },
+//   tablet: {
+//     breakpoint: { max: 834, min: 769 },
+//   },
+//   landscapeMobile: {
+//     breakpoint: { max: 768, min: 481 },
+//   },
+//   mobile: {
+//     breakpoint: { max: 480, min: 320 },
+//   },
+// };
+
 function Home() {
+  const { products } = useProducts();
+  // console.info("products: ", products);
+  // const [activeButton, setActiveButton] = useState(null);
+  const [searchValue, setSearchValue] = useState("");
+  const [isFavorite, setIsFavorite] = useState(null);
+  // const categoriesButtons = [
+  //   "All",
+  //   "Smartphones",
+  //   "Tablets",
+  //   "Laptops",
+  //   "TVs",
+  //   "Smartwatches",
+  // ];
+  const productsForCarousel = products.slice(0, 5);
+  // console.info("productsForCarousel: ", productsForCarousel);
+
+  function handleSearchChange(event) {
+    setSearchValue(event.target.value);
+  }
+
+  function handleFavoriteClick() {
+    setIsFavorite(!isFavorite);
+  }
+
   return (
     <section className="Home">
       <header className="Header">
@@ -22,6 +74,8 @@ function Home() {
             className="SearchInput"
             placeholder="Find a product..."
             type="search"
+            value={searchValue}
+            onChange={handleSearchChange}
           />
           <img
             className="SearchIcon"
@@ -29,58 +83,86 @@ function Home() {
             alt="search icon"
           />
         </div>
-        <div className="DynamicCarouselContainer">
-          <div className="DynamicCarouselItem">
-            <img
-              className="DynamicCarouselImage"
-              src="https://via.placeholder.com/320x180"
-              alt="Dynamic carousel item"
-            />
-          </div>
-        </div>
+        <HeroCarousel productsForCarousel={productsForCarousel} />
         <section className="CategoriesWrapper">
           <div className="CategoriesSectionTitleContainer">
             <p className="CategoriesSectionTitle">Categories</p>
-            <p className="LinkToCategoriesPage">See all</p>
+            <NavLink className="LinkToCategoriesPage" to="/">
+              See all
+            </NavLink>
           </div>
-          <div className="CategoriesContainer">
-            <button className="CategoryButton IsActive" type="button">
-              All
-            </button>
-            <button className="CategoryButton" type="button">
-              Smartphones
-            </button>
-          </div>
+          {/* <Carousel
+            additionalTransfrom={0}
+            arrows
+            autoPlay={false}
+            centerMode={false}
+            containerClass="CategoriesContainer"
+            draggable
+            focusOnSelect={false}
+            infinite={false}
+            itemClass="CategoryItem"
+            removeArrowOnDeviceType={["mobile", "landscapeMobile", "tablet"]}
+            responsive={responsiveCategories}
+            sliderClass="CategorySliderContainer"
+            swipeable
+          >
+            {categoriesButtons.map((button, index) => (
+              <button
+                key={button}
+                className={`CategoryButton ${
+                  activeButton === index ? "IsActive" : ""
+                }`}
+                type="button"
+                onClick={() => setActiveButton(index)}
+              >
+                {button}
+              </button>
+            ))}
+          </Carousel> */}
         </section>
         <section className="ProductsWrapper">
-          <div className="ProductCard">
-            <div className="ProductImageContainer">
-              <div className="ProductImageFrame">
-                <img
-                  className="ProductImage"
-                  src="https://via.placeholder.com/149x149"
-                  alt="Product"
-                />
-              </div>
-              <div className="FavoriteLogoContainer">
-                <div className="HeartIconContainer">
-                  <img
-                    className="HeartIcon"
-                    src="/icons/heart-icon.svg"
-                    alt="heart icon"
-                  />
+          {products
+            .filter((product) =>
+              product.name.toLowerCase().includes(searchValue.toLowerCase())
+            )
+            .map((product) => {
+              return (
+                <div key={product.id} className="ProductCard">
+                  <div className="ProductImageContainer">
+                    <div className="ProductImageFrame">
+                      <img
+                        className="ProductImage"
+                        src={product.image_url}
+                        alt={product.name}
+                      />
+                    </div>
+                    <div className="FavoriteLogoContainer">
+                      <button
+                        className="HeartIconContainer"
+                        onClick={handleFavoriteClick}
+                        type="button"
+                      >
+                        <img
+                          className="HeartIcon"
+                          src={
+                            isFavorite
+                              ? "/icons/heart-solid.svg"
+                              : "/icons/heart-icon.svg"
+                          }
+                          alt="heart icon"
+                        />
+                      </button>
+                    </div>
+                  </div>
+                  <div className="ProductNameContainer">
+                    <p className="ProductName">{product.name}</p>
+                  </div>
+                  <div className="ProductPriceContainer">
+                    <p className="ProductPrice">{product.price}</p>
+                  </div>
                 </div>
-              </div>
-            </div>
-            <div className="ProductNameContainer">
-              <p className="ProductName">
-                Apple iPhone 15 Pro 128GB Natural Titanium
-              </p>
-            </div>
-            <div className="ProductPriceContainer">
-              <p className="ProductPrice">£699.00</p>
-            </div>
-          </div>
+              );
+            })}
         </section>
       </main>
       <footer className="Footer">
