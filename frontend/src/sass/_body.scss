@@ -1,7 +1,11 @@
 body {
   color: var(--secondary-color);
   font-family: var(--main-font);
-  font-size: calc(var(--font-size-constant) * 1.6);
+  font-size: clamp(
+    calc(var(--minimum-font-size) * 1.6),
+    calc(var(--font-size-constant) * 1.6),
+    calc(var(--minimum-font-size) * 1.6 * var(--enlargement-factor-2))
+  );
   font-weight: var(--font-weight-regular);
   line-height: 1.5;
   width: 100%;

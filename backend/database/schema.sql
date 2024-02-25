@@ -8,3 +8,13 @@ CREATE TABLE `Product` (
   `price` VARCHAR(10) NOT NULL,
   `stock_quantity` INT NOT NULL
 );
+
+DROP TABLE IF EXISTS `User`;
+
+CREATE TABLE `User` (
+  `id` INT UNIQUE PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  `username` VARCHAR(255) NOT NULL,
+  `password` VARCHAR(255) NOT NULL,
+  `email` VARCHAR(255) NOT NULL,
+  `is_admin` TINYINT(1) NOT NULL DEFAULT 0
+);

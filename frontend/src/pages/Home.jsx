@@ -1,37 +1,13 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-// import Carousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
 import { useProducts } from "../contexts/ProductContext";
 import HeroCarousel from "../components/HeroCarousel";
 
-// const responsiveCategories = {
-//   desktop: {
-//     breakpoint: { max: 3000, min: 1601 },
-//   },
-//   laptop: {
-//     breakpoint: { max: 1600, min: 1025 },
-//   },
-//   landscapeTablet: {
-//     breakpoint: { max: 1024, min: 835 },
-//   },
-//   tablet: {
-//     breakpoint: { max: 834, min: 769 },
-//   },
-//   landscapeMobile: {
-//     breakpoint: { max: 768, min: 481 },
-//   },
-//   mobile: {
-//     breakpoint: { max: 480, min: 320 },
-//   },
-// };
-
 function Home() {
   const { products } = useProducts();
-  // console.info("products: ", products);
   // const [activeButton, setActiveButton] = useState(null);
   const [searchValue, setSearchValue] = useState("");
-  const [isFavorite, setIsFavorite] = useState(null);
+  const [favorites, setFavorites] = useState({});
   // const categoriesButtons = [
   //   "All",
   //   "Smartphones",
@@ -41,15 +17,17 @@ function Home() {
   //   "Smartwatches",
   // ];
   const productsForCarousel = products.slice(0, 5);
-  // console.info("productsForCarousel: ", productsForCarousel);
 
   function handleSearchChange(event) {
     setSearchValue(event.target.value);
   }
 
-  function handleFavoriteClick() {
-    setIsFavorite(!isFavorite);
-  }
+  const handleFavoriteClick = (productId) => {
+    setFavorites((prevFavorites) => ({
+      ...prevFavorites,
+      [productId]: !prevFavorites[productId],
+    }));
+  };
 
   return (
     <section className="Home">
@@ -139,13 +117,13 @@ function Home() {
                     <div className="FavoriteLogoContainer">
                       <button
                         className="HeartIconContainer"
-                        onClick={handleFavoriteClick}
+                        onClick={() => handleFavoriteClick(product.id)}
                         type="button"
                       >
                         <img
                           className="HeartIcon"
                           src={
-                            isFavorite
+                            favorites[product.id]
                               ? "/icons/heart-solid.svg"
                               : "/icons/heart-icon.svg"
                           }

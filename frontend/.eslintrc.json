@@ -38,6 +38,7 @@
       "error",
       {
         "devDependencies": ["**/vite.config.js"]
+        // "dependencies": ["**/src/components/HeroCarousel.jsx"]
       }
     ]
   }
