@@ -55,11 +55,11 @@ function Home() {
             value={searchValue}
             onChange={handleSearchChange}
           />
-          <img
+          {/* <img
             className="SearchIcon"
             src="/icons/search-icon.svg"
             alt="search icon"
-          />
+          /> */}
         </div>
         <HeroCarousel productsForCarousel={productsForCarousel} />
         <section className="CategoriesWrapper">

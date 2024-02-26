@@ -16,8 +16,8 @@ function AppWrapper() {
       ) {
         // Handle token expiration
         localStorage.removeItem("token");
-        localStorage.removeItem("isAdminMode");
-        navigate("/authentication"); // Redirect to login page
+        // localStorage.removeItem("isAdminMode");
+        navigate("/"); // Redirect to login page
       }
       return Promise.reject(error);
     }

@@ -23,7 +23,7 @@ const seed = async () => {
     await database.query("TRUNCATE TABLE `Product`");
 
     // Insert fake data into the 'item' table
-    for (let productRow = 0; productRow < 100; productRow += 1) {
+    for (let productRow = 0; productRow < 3; productRow += 1) {
       const image_url = faker.image.urlPicsumPhotos();
       const name = faker.commerce.productName();
       const description = faker.commerce.productDescription();

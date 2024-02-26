@@ -5,6 +5,7 @@ import AppWrapper from "./AppWrapper";
 import Home from "./pages/Home";
 import AuthForms from "./pages/AuthForms";
 import { ProductProvider } from "./contexts/ProductContext";
+import { UserProvider } from "./contexts/UserContext";
 import "./sass/index.scss";
 
 const router = createBrowserRouter([
@@ -14,11 +15,15 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Home />,
-      },
-      {
-        path: "/authentication",
         element: <AuthForms />,
+      },
+      // {
+      //   path: "/authentication",
+      //   element: <AuthForms />,
+      // },
+      {
+        path: "/home",
+        element: <Home />,
       },
     ],
   },
@@ -28,8 +33,10 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
   <React.StrictMode>
-    <ProductProvider>
-      <RouterProvider router={router} />
-    </ProductProvider>
+    <UserProvider>
+      <ProductProvider>
+        <RouterProvider router={router} />
+      </ProductProvider>
+    </UserProvider>
   </React.StrictMode>
 );
