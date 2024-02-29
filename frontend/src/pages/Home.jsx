@@ -110,7 +110,7 @@ function Home() {
                     <div className="ProductImageFrame">
                       <img
                         className="ProductImage"
-                        src={product.image_url}
+                        src={product.image_file}
                         alt={product.name}
                       />
                     </div>

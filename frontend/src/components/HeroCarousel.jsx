@@ -10,7 +10,7 @@ function HeroCarousel({ productsForCarousel }) {
       <div className="embla__container">
         {productsForCarousel.map((product) => (
           <div className="embla__slide" key={product.id}>
-            <img src={product.image_url} alt={product.name} />
+            <img src={product.image_file} alt={product.name} />
           </div>
         ))}
       </div>
@@ -22,7 +22,7 @@ HeroCarousel.propTypes = {
   productsForCarousel: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
-      image_url: PropTypes.string.isRequired,
+      image_file: PropTypes.string,
       name: PropTypes.string.isRequired,
     })
   ).isRequired,

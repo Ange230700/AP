@@ -6,37 +6,41 @@ class ProductManager extends AbstractManager {
     super({ table: "Product" });
   }
 
-  async create({ image_url, name, description, price, stock_quantity }) {
+  async create({ image_file, name, description, price, stock_quantity }) {
     const [result] = await this.database.query(
-      `INSERT INTO ${this.table} (image_url, name, description, price, stock_quantity) VALUES (?, ?, ?, ?)`,
-      [image_url, name, description, price, stock_quantity]
+      `INSERT INTO ${this.table} (image_file, name, description, price, stock_quantity) VALUES (?, ?, ?, ?, ?)`,
+      [image_file, name, description, price, stock_quantity]
     );
 
-    return result.insertId;
+    const createdProductId = result.insertId;
+
+    return createdProductId;
+  }
+
+  async readAll() {
+    const [arrayOfAllProducts] = await this.database.query(
+      `SELECT * FROM ${this.table}`
+    );
+
+    return arrayOfAllProducts;
   }
 
   async read(id) {
-    const [rows] = await this.database.query(
+    const [arrayOfSpecificProduct] = await this.database.query(
       `SELECT * FROM ${this.table} WHERE id = ?`,
       [id]
     );
 
-    return rows[0];
+    return arrayOfSpecificProduct;
   }
 
-  async readAll() {
-    const [rows] = await this.database.query(`SELECT * FROM ${this.table}`);
-
-    return rows;
-  }
-
-  async update({ id, image_url, name, description, price, stock_quantity }) {
+  async update(id, { image_file, name, description, price, stock_quantity }) {
     const [result] = await this.database.query(
-      `UPDATE ${this.table} SET image_url = ?, name = ?, description = ?, price = ?, stock_quantity = ? WHERE id = ?`,
-      [image_url, name, description, price, stock_quantity, id]
+      `UPDATE ${this.table} SET image_file = COALESCE(?, image_file), name = COALESCE(?, name), description = COALESCE(?, description), price = COALESCE(?, price), stock_quantity = COALESCE(?, stock_quantity) WHERE id = ?`,
+      [image_file, name, description, price, stock_quantity, id]
     );
 
-    return result.affectedRows === 1;
+    return result.affectedRows;
   }
 
   async delete(id) {
@@ -45,7 +49,7 @@ class ProductManager extends AbstractManager {
       [id]
     );
 
-    return result.affectedRows === 1;
+    return result.affectedRows;
   }
 }
 

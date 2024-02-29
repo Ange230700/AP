@@ -1,83 +1,139 @@
 const tables = require("../tables");
 
 // The B of BREAD - Browse (Read All) operation
-const browse = async (req, res, next) => {
+const browse = async (request, response, next) => {
   try {
     // % Fetch all products from the database
-    const products = await tables.Product.readAll();
+    const arrayOfAllProducts = await tables.Product.readAll();
 
     // Respond with the products in JSON format
-    res.json(products);
+    response.status(200).json(arrayOfAllProducts);
   } catch (error) {
     next(error);
   }
 };
 
 // The R of BREAD - Read operation
-const read = async (req, res, next) => {
+const read = async (request, response, next) => {
   try {
     // Fetch a specific product from the database based on the provided ID
-    const product = await tables.Product.read(req.params.id);
+    const arrayOfSpecificProduct = await tables.Product.read(request.params.id);
 
     // If the product is not found, respond with HTTP 404 (Not Found)
     // Otherwise, respond with the product in JSON format
-    if (product == null) {
-      res.sendStatus(404);
+    if (!arrayOfSpecificProduct) {
+      response.sendStatus(404).send({ error: "Product not found" });
     } else {
-      res.json(product);
+      response.status(200).json(arrayOfSpecificProduct);
     }
   } catch (error) {
+    console.error("Error reading product:", error);
+    response
+      .status(500)
+      .send({ error: `Internal server error: ${error.message}` });
     next(error);
   }
 };
 
 // The E of BREAD - Edit (Update) operation
 
-const edit = async (req, res, next) => {
+const edit = async (request, response, next) => {
   // Extract the product data from the request body
-  const product = req.body;
+  const { id } = request.params;
+  const { image_file, name, description, price, stock_quantity } = request.body;
 
   try {
-    // Update the product in the database
-    const updateId = await tables.Product.update(product);
+    const currentProduct = await tables.Product.read(id);
 
-    // Respond with HTTP 201 (Created) and the ID of the newly inserted product
-    res.status(201).json({ updateId });
+    if (!currentProduct) {
+      return response.status(404).send({ error: "Product not found" });
+    }
+
+    // Update the product in the database
+    const updatedProduct = await tables.Product.update(id, {
+      image_file,
+      name,
+      description,
+      price,
+      stock_quantity,
+    });
+
+    if (!updatedProduct) {
+      return response.status(400).send({ error: "Product not updated" });
+    }
+
+    return response
+      .status(200)
+      .send({ message: "Product updated successfully" });
   } catch (error) {
     // Pass any errors to the error-handling middleware
+    console.error("Error updating product:", error);
+    response
+      .status(500)
+      .send({ error: `Internal server error: ${error.message}` });
     next(error);
   }
+
+  return null;
 };
 
 // The A of BREAD - Add (Create) operation
 
-const add = async (req, res, next) => {
-  // Extract the product data from the request body
-  const product = req.body;
-
+const add = async (request, response, next) => {
   try {
-    // Insert the product into the database
-    const insertId = await tables.Product.create(product);
+    // Extract the product data from the request body
+    const { image_file, name, description, price, stock_quantity } =
+      request.body;
 
-    // Respond with HTTP 201 (Created) and the ID of the newly inserted product
-    res.status(201).json({ insertId });
+    if (!name || !description || !price || !stock_quantity) {
+      return response.status(400).send({ error: "Missing required fields" });
+    }
+
+    // Insert the product into the database
+    const createdProductId = await tables.Product.create({
+      image_file,
+      name,
+      description,
+      price,
+      stock_quantity,
+    });
+
+    if (!createdProductId) {
+      response.status(400).send({ error: "Product not created" });
+    } else {
+      // Respond with HTTP 201 (Created) and the ID of the newly inserted product
+      response.status(201).send({ message: "Product created successfully" });
+    }
   } catch (error) {
     // Pass any errors to the error-handling middleware
+    console.error("Error adding product:", error.message);
+    response
+      .status(500)
+      .send({ error: `Internal server error: ${error.message}` });
     next(error);
   }
+
+  return null;
 };
 
 // The D of BREAD - Destroy (Delete) operation
 
-const destroy = async (req, res, next) => {
+const destroy = async (request, response, next) => {
   try {
     // Delete the product from the database
-    const deleteId = await tables.Product.delete(req.params.id);
+    const affectedRows = await tables.Product.delete(request.params.id);
 
-    // Respond with HTTP 200 (OK) and the ID of the deleted product
-    res.status(200).json({ deleteId });
+    if (!affectedRows) {
+      response.status(404).send({ error: "Product not found" });
+    } else {
+      response.status(200).send({ message: "Product deleted successfully" });
+    }
   } catch (error) {
     // Pass any errors to the error-handling middleware
+    console.error("Error deleting product:", error);
+    response
+      .status(500)
+      .send({ error: `Internal server error: ${error.message}` });
     next(error);
   }
 };

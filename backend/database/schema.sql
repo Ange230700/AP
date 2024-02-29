@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS `Product`;
 
 CREATE TABLE `Product` (
   `id` INT UNIQUE PRIMARY KEY AUTO_INCREMENT NOT NULL,
-  `image_url` VARCHAR(255) NOT NULL,
+  `image_file` VARCHAR(255) DEFAULT NULL,
   `name` VARCHAR(255) NOT NULL,
   `description` TEXT NOT NULL,
   `price` VARCHAR(10) NOT NULL,
@@ -14,7 +14,10 @@ DROP TABLE IF EXISTS `User`;
 CREATE TABLE `User` (
   `id` INT UNIQUE PRIMARY KEY AUTO_INCREMENT NOT NULL,
   `username` VARCHAR(255) NOT NULL,
-  `password` VARCHAR(255) NOT NULL,
   `email` VARCHAR(255) NOT NULL,
-  `is_admin` TINYINT(1) NOT NULL DEFAULT 0
+  `hashed_password` VARCHAR(255) NOT NULL,
+  `birthdate` DATE NOT NULL,
+  `gender` BOOLEAN NOT NULL,
+  `profile_picture_file` VARCHAR(255) DEFAULT NULL,
+  `is_admin` BOOLEAN NOT NULL DEFAULT 0
 );
